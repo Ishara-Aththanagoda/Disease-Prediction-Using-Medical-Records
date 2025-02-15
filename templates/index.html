@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Breast Cancer Prediction</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Breast Cancer Prediction</h2>
+        <form id="predictionForm">
+            <label>Enter Feature Values (Comma Separated):</label>
+            <input type="text" id="features" placeholder="e.g., 10.5, 20.3, 15.8, ...">
+            <button type="button" onclick="makePrediction()">Predict</button>
+        </form>
+        <h3 id="result"></h3>
+    </div>
+
+    <script>
+        function makePrediction() {
+            let inputValues = document.getElementById("features").value.split(',').map(Number);
+            fetch("/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ features: inputValues })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerText = "Prediction: " + data.prediction;
+            });
+        }
+    </script>
+</body>
+</html>
